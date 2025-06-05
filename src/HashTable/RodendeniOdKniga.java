@@ -16,13 +16,10 @@ public class RodendeniOdKniga {
         for (int i = 0; i < n; i++) {
             String []parts = cin.nextLine().split(" ");
             String ime = parts[0];
-            String mesec = parts[1];
-            if(mesec.length() == 9){
-                mesec = mesec.substring(3,4);
-            }
-            else if (mesec.length() == 8){
-                mesec = mesec.substring(2,3);
-            }
+            String datum = parts[1];
+            String []deloviDatum = datum.split("\\.");
+            String mesec = deloviDatum[1];
+
 
             ArrayList<String> list = new ArrayList<>();
             if (map.search(mesec) == null){
