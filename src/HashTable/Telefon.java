@@ -24,6 +24,7 @@ public class Telefon {
         }
         SLLNode<MapEntry<String, String>> result = map.search(broj);
 
+
         if (result == null){
             System.out.println("Unknown number");
         }
