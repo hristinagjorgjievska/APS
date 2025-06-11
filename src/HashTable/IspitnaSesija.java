@@ -1,82 +1,81 @@
 package HashTable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
-class Ispit{
+class Kol{
     String datum;
     String vreme;
-    String prostorija;
+    String mesto;
     String predmet;
 
-    public Ispit(String datum, String vreme, String prostorija, String predmet) {
+    public Kol(String datum, String vreme, String mesto, String predmet) {
         this.datum = datum;
         this.vreme = vreme;
-        this.prostorija = prostorija;
+        this.mesto = mesto;
         this.predmet = predmet;
     }
 
     public String getDatum() {
-        return vreme;
+        return datum;
     }
 
     public String getVreme() {
         return vreme;
     }
 
-    public String getProstorija() {
-        return prostorija;
+    public String getMesto() {
+        return mesto;
     }
 
     public String getPredmet() {
         return predmet;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s %s %s %s", datum, vreme, prostorija, predmet);
-    }
 }
-
-public class IspitnaSesija {
+public class IspitnaSesija{
     public static void main(String[] args) {
         Scanner cin = new Scanner(System.in);
         int n = cin.nextInt();
         cin.nextLine();
 
-        CBHT<String, ArrayList<Ispit>> map = new CBHT<>(n*2);
+        CBHT<String, List<Kol>> map = new CBHT<>(n);
 
         for (int i = 0; i < n; i++) {
-            String line = cin.nextLine();
-            String[] parts = line.split(" ");
-            String datum = parts[0];
-            String vreme = parts[1];
-            String prostorija = parts[2];
-            String predmet = parts[3];
+            String datum = cin.next();
+            String vreme = cin.next();
+            String mesto = cin.next();
+            String predmet = cin.nextLine();
 
-            Ispit ispit = new Ispit(datum, vreme, prostorija, predmet);
+            Kol k = new Kol(datum, vreme, mesto, predmet);
 
-            if (map.search(datum) == null) {
-                ArrayList<Ispit> list = new ArrayList<>();
-                list.add(ispit);
+            if (map.search(datum) == null){
+                List<Kol> list = new ArrayList<>();
+                list.add(k);
                 map.insert(datum, list);
             }
             else {
-                SLLNode<MapEntry<String, ArrayList<Ispit>>> tmp = map.search(datum);
-                tmp.element.value.add(ispit);
+                SLLNode<MapEntry<String, List<Kol>>> tmp = map.search(datum);
+                List<Kol> list = tmp.element.value;
+                list.add(k);
+                map.insert(datum, list);
             }
         }
 
         String datum = cin.next();
-        SLLNode<MapEntry<String, ArrayList<Ispit>>> result = map.search(datum);
+        SLLNode<MapEntry<String, List<Kol>>> result = map.search(datum);
 
         if (result == null){
-            System.out.println("Empty");
+            System.out.println("nema ispiti na toj den");
         }
         else {
-            for (Ispit i : result.element.value){
-                System.out.println(i.toString());
+            List<Kol> list = result.element.value;
+            list.sort((a, b) -> a.getVreme().compareTo(b.getVreme()));
+            for (Kol k : list){
+                System.out.println(k.getVreme() + " " + k.getMesto() + " " + k.getPredmet());
             }
         }
+
     }
 }
